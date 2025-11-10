@@ -1,0 +1,20 @@
+{{ extends "global/Page.html" }}
+{{ block title }}感谢您的参与{{ endblock }}
+{{ block content }}
+
+    <h3>感谢您参与本次实验！</h3>
+    
+    <p>
+        您的实验已完成。感谢您的配合与参与！
+    </p>
+    
+    <p>
+        您的被试编号：{{ player.subject_id }}
+    </p>
+    
+    <p>
+        您的最终收益：{{ player.payoff }}
+    </p>
+
+{{ endblock }}
+

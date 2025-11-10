@@ -1,0 +1,20 @@
+{{ block title }}Results{{ endblock }}
+{{ block content }}
+
+    <h3>实验结果</h3>
+    
+    <p><strong>您的被试编号：</strong>{{ player.subject_id }}</p>
+    
+    <p><strong>理解检查答案：</strong>{{ player.comprehension_answer }}</p>
+    
+    <p>
+        You started with an endowment of {{ C.ENDOWMENT }},
+        of which you contributed {{ player.contribution }}.
+        Your group contributed {{ group.total_contribution }},
+        resulting in an individual share of {{ group.individual_share }}.
+        Your profit is therefore {{ player.payoff }}.
+    </p>
+
+    {{ next_button }}
+
+{{ endblock }}

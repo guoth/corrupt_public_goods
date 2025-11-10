@@ -1,0 +1,30 @@
+{{ extends "global/Page.html" }}
+{{ block title }}知情同意{{ endblock }}
+{{ block content }}
+
+    <p>
+        欢迎参加本次实验！
+    </p>
+    
+    <p>
+        在开始实验之前，请您仔细阅读以下内容：
+    </p>
+    
+    <p>
+        <strong>实验说明：</strong>
+    </p>
+    <ul>
+        <li>实验过程完全匿名，您的个人信息将被严格保密</li>
+        <li>实验预计耗时约15-20分钟</li>
+    </ul>
+    
+    <p>
+        如果您同意参加本实验，请勾选下方的同意选项，然后点击"下一步"按钮继续。
+    </p>
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+{{ endblock }}
+

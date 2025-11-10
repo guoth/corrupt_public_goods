@@ -1,0 +1,26 @@
+{{ extends "global/Page.html" }}
+{{ block title }}匹配成功{{ endblock }}
+{{ block content }}
+
+    <div style="text-align: center; padding: 40px;">
+        <h2 style="color: #28a745; margin-bottom: 20px;">✓ 配对成功！</h2>
+        <p style="font-size: 18px; margin-bottom: 20px;">
+            已成功为您匹配到其他玩家
+        </p>
+        <p style="font-size: 18px; margin-bottom: 30px;">
+            <strong>你当前的角色是：{{ player.role }}</strong>
+        </p>
+        <p style="font-size: 16px; margin-bottom: 30px;">
+            即将开始投资决策环节...
+        </p>
+    </div>
+
+{{ endblock }}
+
+{{ block styles }}
+<style>
+    /* 隐藏 oTree 顶部计时器（不向被试显示倒计时） */
+    .otree-timer, [data-otree-timer] { display: none !important; }
+</style>
+{{ endblock }}
+

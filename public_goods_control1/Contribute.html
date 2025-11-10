@@ -1,0 +1,48 @@
+{{ extends "global/Page.html" }}
+{{ block title }}投资决策{{ endblock }}
+{{ block content }}
+
+    <p>
+        你现在拥有 {{ C.ENDOWMENT }} 初始代币。
+    </p>
+    
+    <p>
+        请决定向公共池投入多少代币（0-{{ C.ENDOWMENT }}之间任意整数）。
+    </p>
+    
+    <p>
+        记住：你的游戏收益= 你剩余的代币数＋（包括你在内的所有成员投入公共池的代币总数x{{ C.MULTIPLIER }}）/4
+    </p>
+
+    {{ formfields }}
+
+    {{ next_button }}
+
+{{ endblock }}
+
+{{ block styles }}
+<style>
+    /* 隐藏反应时和页面加载时间字段 */
+    #id_reaction_time, #id_page_load_time {
+        display: none;
+    }
+    label[for="id_reaction_time"], label[for="id_page_load_time"] {
+        display: none;
+    }
+</style>
+{{ endblock }}
+
+{{ block scripts }}
+<script>
+    // 记录页面加载时间（毫秒）
+    var pageLoadTime = Date.now();
+    document.getElementById('id_page_load_time').value = pageLoadTime;
+    
+    // 在表单提交时计算反应时
+    document.querySelector('form').addEventListener('submit', function(e) {
+        var submitTime = Date.now();
+        var reactionTime = (submitTime - pageLoadTime)/1000;
+        document.getElementById('id_reaction_time').value = reactionTime;
+    });
+</script>
+{{ endblock }}

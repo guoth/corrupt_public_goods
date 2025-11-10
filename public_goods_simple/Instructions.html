@@ -1,0 +1,28 @@
+{{ extends "global/Page.html" }}
+{{ block title }}实验说明{{ endblock }}
+{{ block content }}
+
+    <h3>实验背景介绍</h3>
+    
+    <p>
+        这是一个公共品博弈实验。在本次实验中，您将与其他参与者一起进行决策。
+    </p>
+    
+    <p>
+        实验规则：
+    </p>
+    <ul>
+        <li>每组有 {{ C.PLAYERS_PER_GROUP }} 名参与者</li>
+        <li>每位参与者初始拥有 {{ C.ENDOWMENT }} 点</li>
+        <li>您需要决定向公共池贡献多少点</li>
+        <li>公共池中的总贡献将乘以 {{ C.MULTIPLIER }} 倍，然后平均分配给所有参与者</li>
+    </ul>
+    
+    <p>
+        请仔细阅读以上说明，然后点击"下一步"继续。
+    </p>
+
+    {{ next_button }}
+
+{{ endblock }}
+

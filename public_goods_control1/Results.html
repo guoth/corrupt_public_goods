@@ -1,0 +1,38 @@
+{{ extends "global/Page.html" }}
+{{ block title }}实验完成{{ endblock }}
+{{ block content }}
+
+    <div style="text-align: center; padding: 40px;">
+        
+        <div style="background-color: #f8f9fa; padding: 30px; border-radius: 10px; margin: 30px auto; max-width: 600px;">
+            <p style="font-size: 18px; margin-bottom: 20px; color: #333;">
+                {% if player.round_number == C.NUM_ROUNDS %}
+                    您的实验所有轮次已完成。
+                {% else %}
+                    本轮已结束，点击“下一步”进入下一轮。
+                {% endif %}
+            </p>
+            
+            <p style="font-size: 16px; margin-bottom: 15px; color: #666;">
+                <strong>您的被试编号：</strong>{{ subject_id }}
+            </p>
+            
+            {% if player.round_number == C.NUM_ROUNDS %}
+            <p style="font-size: 16px; color: #333;">感谢您的参与与配合！</p>
+            <div style="margin-top: 30px; padding: 20px; background-color: #fff3cd; border-left: 4px solid #ffc107; border-radius: 5px;">
+                <p style="font-size: 16px; color: #856404; margin: 0;">
+                    <strong>⚠️ 重要提示：</strong>
+                </p>
+                <p style="font-size: 16px; color: #856404; margin-top: 10px;">
+                    请<strong>截图保存此页面</strong>，并将截图发送给实验者。
+                </p>
+            </div>
+            {% endif %}
+
+            <div style="margin-top: 30px;">
+                {{ next_button }}
+            </div>
+        </div>
+    </div>
+
+{{ endblock }}
