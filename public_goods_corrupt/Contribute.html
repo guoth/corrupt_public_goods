@@ -1,0 +1,131 @@
+{{ extends "global/Page.html" }}
+{{ block title }}{% if current_logic == 1 %}投资决策{% else %}分配决策{% endif %}{{ endblock }}
+{{ block content }}
+
+    <p>
+        你现在拥有<strong> {{ C.ENDOWMENT }} </strong>初始代币。    
+    </p>
+    <p>
+        <strong>你抽到的角色是：{{ player_role }}</strong>
+    </p>
+
+    {# 游戏收益公式提前到角色下面 #}
+    {% if current_logic == 1 %}
+    <p>
+        你的游戏收益 = 你剩余的代币数 ＋（包括你在内的四名成员投入公共池的代币总数 × {{ C.MULTIPLIER }}）/4 ＋（E给你的代币数 × 3）
+    </p>
+    {% else %}
+    <p>
+        你的游戏收益 = 你剩余的代币数（相当于 {{ C.ENDOWMENT }} − 你投入公共池的代币数 − 你转给E的代币数）＋（包括你在内的四名成员投入公共池的代币总数 × {{ C.MULTIPLIER }}）/4 ＋（E给你的代币数 × 3）
+    </p>
+    {% endif %}
+
+    {% if current_logic == 1 %}
+    <p>
+        请决定向公共池投入多少代币（0-{{ C.ENDOWMENT }}之间任意整数）。
+    </p>
+    {% else %}
+    <p>
+        请决定如何分配你的代币：
+    </p>
+    <ul>
+        <li>投入公共池的代币数（0-{{ C.ENDOWMENT }}之间任意整数）</li>
+        <li>转给玩家E的代币数（0-{{ C.ENDOWMENT }}之间任意整数）</li>
+        <li>投入公共池的代币数和转给玩家E的代币数的总和不能超过{{ C.ENDOWMENT }}代币</li>
+    </ul>
+    {% endif %}
+
+    {{ formfields }}
+
+    <button class="otree-btn-next btn btn-primary" type="submit">下一步</button>
+
+    <div id="logic-flag" data-logic="{{ current_logic }}" data-endowment="{{ C.ENDOWMENT }}" style="display:none;"></div>
+
+{{ endblock }}
+
+
+{{ block styles }}
+<style>
+    /* 隐藏反应时和页面加载时间字段 */
+    #id_reaction_time, #id_page_load_time {
+        display: none;
+    }
+    label[for="id_reaction_time"], label[for="id_page_load_time"] {
+        display: none;
+    }
+    /* 隐藏左上角的标题，但保留其位置 */
+    .otree-title, h1 { visibility: hidden !important; }
+    /* 将下一步按钮移到右下角 */
+    .otree-btn-next {
+        float: right !important;
+        margin-top: 20px !important;
+    }
+    /* 第二套逻辑：转给E的输入框样式（仅在存在该字段时生效） */
+    #id_transfer_to_e {
+        margin-top: 10px;
+    }
+</style>
+{{ endblock }}
+
+{{ block scripts }}
+<script>
+    // 页面加载时间
+    var pageLoadTime = Date.now();
+    document.getElementById('id_page_load_time').value = pageLoadTime;
+    
+    // 从隐藏元素读取逻辑标志，避免模板指令进入JS
+    var logicFlagEl = document.getElementById('logic-flag');
+    var isLogic2 = logicFlagEl && logicFlagEl.dataset && logicFlagEl.dataset.logic === '2';
+
+    // 实时验证投给公共池和转给E的总和
+    var contributionField = document.getElementById('id_contribution');
+    var transferToEField = document.getElementById('id_transfer_to_e');
+    var maxEndowment = logicFlagEl && logicFlagEl.dataset ? parseInt(logicFlagEl.dataset.endowment) : 0;
+    
+    if (isLogic2 && transferToEField && (transferToEField.value === '0' || transferToEField.value === '')) {
+        transferToEField.value = '';
+    }
+
+    function validateTotal() {
+        if (!isLogic2) return true;
+        var contribution = parseInt(contributionField.value) || 0;
+        var transferToE = parseInt(transferToEField.value) || 0;
+        var total = contribution + transferToE;
+        
+        var errorMsg = document.getElementById('total-error-msg');
+        if (errorMsg) errorMsg.remove();
+        
+        if (total > maxEndowment) {
+            var errorDiv = document.createElement('div');
+            errorDiv.id = 'total-error-msg';
+            errorDiv.style.color = 'red';
+            errorDiv.style.marginTop = '10px';
+            errorDiv.style.fontWeight = 'bold';
+            errorDiv.textContent = '错误：投入公共池的代币数（' + contribution + '）和转给玩家E的代币数（' + transferToE + '）的总和（' + total + '）不能超过' + maxEndowment + '个代币。';
+            
+            transferToEField.parentNode.insertBefore(errorDiv, transferToEField.nextSibling);
+            return false;
+        }
+        return true;
+    }
+    
+    if (isLogic2 && contributionField) {
+        contributionField.addEventListener('input', validateTotal);
+        contributionField.addEventListener('change', validateTotal);
+    }
+    if (isLogic2 && transferToEField) {
+        transferToEField.addEventListener('input', validateTotal);
+        transferToEField.addEventListener('change', validateTotal);
+    }
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+        var submitTime = Date.now();
+        document.getElementById('id_reaction_time').value = (submitTime - pageLoadTime)/1000;
+        
+        if (isLogic2 && !validateTotal()) {
+            e.preventDefault();
+            return false;
+        }
+    });
+</script>
+{{ endblock }}

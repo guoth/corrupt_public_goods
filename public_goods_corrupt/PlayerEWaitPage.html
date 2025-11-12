@@ -1,9 +1,9 @@
 {{ extends "global/Page.html" }}
-{{ block title }}正在匹配{{ endblock }}
+{{ block title }}等待玩家E决策{{ endblock }}
 {{ block content }}
 
     <div style="text-align: center; padding: 40px;">
-        <h2 style="margin-bottom: 16px;">正在为您匹配其他玩家...</h2>
+        <h2 style="margin-bottom: 16px;">玩家E正在决策中，请等待...</h2>
     </div>
 
 {{ endblock }}
@@ -12,5 +12,8 @@
 <style>
     /* 隐藏 oTree 顶部计时器（不向被试显示倒计时） */
     .otree-timer, [data-otree-timer] { display: none !important; }
+     /* 隐藏左上角的标题，但保留其位置 */
+ .otree-title, h1 { visibility: hidden !important; }
 </style>
 {{ endblock }}
+

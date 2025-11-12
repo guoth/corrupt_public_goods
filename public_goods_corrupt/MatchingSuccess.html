@@ -5,13 +5,13 @@
     <div style="text-align: center; padding: 40px;">
         <h2 style="color: #28a745; margin-bottom: 20px;">✓ 配对成功！</h2>
         <p style="font-size: 18px; margin-bottom: 20px;">
-            已成功为您匹配到其他玩家
+            已成功为你匹配到其他玩家
         </p>
         <p style="font-size: 18px; margin-bottom: 30px;">
             <strong>你当前的角色是：{{ player.role }}</strong>
         </p>
         <p style="font-size: 16px; margin-bottom: 30px;">
-            即将开始投资决策环节...
+            即将开始决策环节...
         </p>
     </div>
 
@@ -21,6 +21,8 @@
 <style>
     /* 隐藏 oTree 顶部计时器（不向被试显示倒计时） */
     .otree-timer, [data-otree-timer] { display: none !important; }
+     /* 隐藏左上角的标题，但保留其位置 */
+     .otree-title, h1 { visibility: hidden !important; }
 </style>
 {{ endblock }}
 

@@ -1,0 +1,113 @@
+{{ extends "global/Page.html" }}
+{{ block title }}实验说明{{ endblock }}
+{{ block content }}
+
+<p>
+    你将参与几轮游戏，整个过程匿名进行，且<strong>每轮游戏规则可能不同</strong>，请仔细阅读每轮游戏规则。
+</p>
+
+<p>
+    <strong>本轮游戏规则如下：</strong>
+</p>
+
+<p class="rule">
+    （1）<strong>角色分配</strong>：你和另外四位随机匹配的参与者组成一组（共<strong>5人</strong>），每人分别扮演一个固定角色：<strong>A、B、C 、D或E</strong>。
+</p>
+
+<p class="rule">
+    （2）<strong>初始代币</strong>：每位参与者在每轮都拥有<strong>{{ C.ENDOWMENT }}初始代币</strong>。
+</p>
+{% if current_logic == 1 %}
+<div class="rule rule-detail">
+    <span class="rule-index">（3）</span>
+    <span class="rule-label"><strong>角色任务</strong>：</span>
+    <div class="rule-content">
+        <p>如果你的角色为<strong>A、B、C 或 D</strong>，你需要独立决定，把多少代币（0–{{ C.ENDOWMENT }}之间任意整数）<strong>投入一个“公共池”，且剩余代币归自己所有</strong>。</p>
+        <p>如果你的角色为<strong>E</strong>，你需要观看A、B、C和D的决策之后，决定花多少代币<strong>增加</strong>其中一人或多人的代币数，增加比率为<strong>1：3（E的1代币可增加他人3代币）</strong>。</p>
+    </div>
+</div>
+{% else %}
+<div class="rule rule-detail">
+    <span class="rule-index">（3）</span>
+    <span class="rule-label"><strong>角色任务</strong>：</span>
+    <div class="rule-content">
+        <p>如果你的角色为<strong>A、B、C 或 D</strong>，你需要独立决定，怎么<strong>分配你的钱给公共池和转给玩家E，且剩余代币归自己所有</strong>。</p>
+        <p>如果你的角色为<strong>E</strong>，你需要观看A、B、C和D的决策之后，决定花多少代币<strong>增加</strong>其中一人或多人的代币数，增加比率为<strong>1：3（E的1代币可增加他人3代币）</strong>。</p>
+    </div>
+</div>
+{% endif %}
+
+<p class="rule">
+    （4）<strong>公共池倍率：2</strong>
+</p>
+{% if current_logic == 1 %}
+<div class="rule rule-detail">
+    <span class="rule-index">（5）</span>
+    <span class="rule-label"><strong>游戏收益公式：</span>
+    <div class="rule-content">
+        <p>A、B、C 或 D = 你剩余的代币数 ＋ （包括你在内的四名成员投入公共池的代币总数 × {{ C.MULTIPLIER }}）/4 ＋（E给你的代币数 × 3）</p>
+        <p>E = 你剩余的代币数</strong></p>
+    </div>
+</div>
+{% else %}
+<div class="rule rule-detail">
+    <span class="rule-index">（5）</span>
+    <span class="rule-label"><strong>游戏收益公式：</span>
+    <div class="rule-content">
+        <p>A、B、C 或 D = 你剩余的代币数（相当于 {{ C.ENDOWMENT }} − 你投入公共池的代币数 − 你转给E的代币数）＋（包括你在内的四名成员投入公共池的代币总数 × {{ C.MULTIPLIER }}）/4 ＋（E给你的代币数 × 3）</p>
+        <p>E = 你剩余的代币数</strong></p>
+    </div>
+</div>
+{% endif %}
+
+<p>
+    （6）在本次实验中，你将与其他参与者一起进行决策，你的每一个决定都会影响你自己和他人的收益，没有对错之分。
+</p>
+
+<p>
+    下一步你需回答3个问题，以检验你对规则的理解。(<strong>请确保你已完全理解规则，进入下一步后无法返回查看，只有答对才能继续</strong>)
+</p>
+
+<button class="otree-btn-next btn btn-primary" type="submit">下一步</button>
+
+{{ endblock }}
+
+
+{{ block styles }}
+<style>
+    /* 隐藏左上角的标题，但保留其位置 */
+    .otree-title, h1 { visibility: hidden !important; }
+    /* 将next按钮移到右下角 */
+    .otree-btn-next {
+        float: right !important;
+        margin-top: 20px !important;
+    }
+    .rule {
+        margin: 16px 0;
+    }
+    .rule-detail {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        column-gap: 0;
+        row-gap: 8px;
+        margin: 16px 0;
+    }
+    .rule-index {
+        grid-column: 1;
+        white-space: nowrap;
+    }
+    .rule-label {
+        grid-column: 2;
+        white-space: nowrap;
+    }
+    .rule-content {
+        grid-column: 2;
+    }
+    .rule-content p {
+        margin: 0;
+    }
+    .rule-content p + p {
+        margin-top: 8px;
+    }
+</style>
+{{ endblock }}

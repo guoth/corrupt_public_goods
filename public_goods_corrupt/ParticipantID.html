@@ -1,0 +1,22 @@
+{{ extends "global/Page.html" }}
+{{ block title }}欢迎参加实验{{ endblock }}
+{{ block content }}
+
+
+    {{ formfields }}
+
+    <button class="otree-btn-next btn btn-primary" type="submit">下一步</button>
+
+{{ endblock }}
+
+{{ block styles }}
+<style>
+ /* 隐藏左上角的标题，但保留其位置 */
+ .otree-title, h1 { visibility: hidden !important; }
+ /* 将next按钮移到右下角 */
+ .otree-btn-next {
+     float: right !important;
+     margin-top: 20px !important;
+ }
+</style>
+{{ endblock }}

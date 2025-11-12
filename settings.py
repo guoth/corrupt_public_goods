@@ -1,11 +1,16 @@
 from os import environ
 
+# 禁用debug模式：设置环境变量 OTREE_PRODUCTION 来隐藏调试信息
+# 在Windows上：set OTREE_PRODUCTION=1
+# 在Linux/Mac上：export OTREE_PRODUCTION=1
+# 或者在启动服务器时：OTREE_PRODUCTION=1 otree devserver
+# 注意：当 OTREE_PRODUCTION 环境变量被设置时，oTree将进入生产模式，不会显示调试信息
 
 SESSION_CONFIGS = [
     dict(
-        name='public_goods_control1',
-        display_name="公共品博弈实验（控制组）",
-        app_sequence=['public_goods_control1'],
+        name='public_goods_corrupt',
+        display_name="公共品博弈实验（腐败组）",
+        app_sequence=['public_goods_corrupt'],
         num_demo_participants=4,
     ),
 ]
