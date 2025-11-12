@@ -1,27 +1,18 @@
 from os import environ
+import dj_database_url
 
-# 禁用debug模式：设置环境变量 OTREE_PRODUCTION 来隐藏调试信息
-# 在Windows上：set OTREE_PRODUCTION=1
-# 在Linux/Mac上：export OTREE_PRODUCTION=1
-# 或者在启动服务器时：OTREE_PRODUCTION=1 otree devserver
-# 注意：当 OTREE_PRODUCTION 环境变量被设置时，oTree将进入生产模式，不会显示调试信息
-
+# ================== 基本实验配置 ==================
 SESSION_CONFIGS = [
     dict(
         name='public_goods_corrupt',
         display_name="公共品博弈实验（腐败组）",
-        app_sequence=['public_goods_corrupt'],
+        app_sequence=['public_goods_corrupt'],  # 你的实验 app 名
         num_demo_participants=4,
     ),
 ]
 
-# if you set a property in SESSION_CONFIG_DEFAULTS, it will be inherited by all configs
-# in SESSION_CONFIGS, except those that explicitly override it.
-# the session config can be accessed from methods in your apps as self.session.config,
-# e.g. self.session.config['participation_fee']
-
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1.00, 
+    real_world_currency_per_point=1.00,
     participation_fee=3.00,  # 固定参与费3元
     doc="公共品博弈实验"
 )
@@ -29,14 +20,12 @@ SESSION_CONFIG_DEFAULTS = dict(
 PARTICIPANT_FIELDS = []
 SESSION_FIELDS = []
 
-# ISO-639 code
-# for example: de, fr, ja, ko, zh-hans
+# ================== 国际化设置 ==================
 LANGUAGE_CODE = 'zh-hans'
-
-# e.g. EUR, GBP, CNY, JPY
 REAL_WORLD_CURRENCY_CODE = 'CNY'
 USE_POINTS = True
 
+# ================== 房间配置 ==================
 ROOMS = [
     dict(
         name='experiment_room',
@@ -44,20 +33,39 @@ ROOMS = [
         participant_label_file='_rooms/econ101.txt',
     ),
     dict(
-        name='live_demo', 
+        name='live_demo',
         display_name='实时演示（无参与者标签）'
     ),
 ]
 
+# ================== 管理页面 ==================
 ADMIN_USERNAME = 'admin'
-# for security, best to set admin password in an environment variable
-ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD')
+# ✅ 推荐在 Render 环境变量中设置 OTREE_ADMIN_PASSWORD
+ADMIN_PASSWORD = environ.get('OTREE_ADMIN_PASSWORD', '1234')  # 默认密码方便本地测试
 
+# ================== 实验首页 ==================
 DEMO_PAGE_INTRO_HTML = """
 欢迎参加公共品博弈实验！
 """
 
+# ================== 安全密钥 ==================
+# ✅ 渲染部署时自动从环境变量读取，防止泄露
+SECRET_KEY = environ.get('SECRET_KEY', 'default-unsafe-secret-key')
 
-SECRET_KEY = '{{ secret_key }}'
-
+# ================== 应用加载 ==================
 INSTALLED_APPS = ['otree']
+
+# ================== 数据库配置 ==================
+# ✅ Render 上自动使用 PostgreSQL，本地运行则默认 SQLite
+DATABASES = {
+    'default': dj_database_url.config(
+        default=environ.get('DATABASE_URL', 'sqlite:///db.sqlite3')
+    )
+}
+
+# ================== 生产模式（隐藏 debug 信息） ==================
+# ✅ 在 Render 环境变量中设置 OTREE_PRODUCTION=1 即可隐藏调试信息
+if environ.get('OTREE_PRODUCTION'):
+    DEBUG = False
+else:
+    DEBUG = True
